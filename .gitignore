@@ -1,0 +1,13 @@
+# packer build output
+tmp_out*/
+packer_cache/
+crash.log
+
+# large appliance images (FTDv / FMCv qcow2)
+*.qcow2
+
+# vagrant / box (future)
+.vagrant/
+*.box
+builds/*
+!builds/.gitkeep
