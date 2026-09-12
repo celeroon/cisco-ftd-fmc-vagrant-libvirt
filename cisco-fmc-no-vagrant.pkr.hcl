@@ -42,6 +42,14 @@ variable "memory" {
   default = 32768
 }
 
+variable "disk_cache" {
+  type = string
+  # firstboot is write-heavy; "none" (O_DIRECT) is slow on nested/contended storage.
+  # "unsafe" caches writes in host RAM and skips guest flushes — fine for a throwaway
+  # build image (a host crash mid-build just means rebuild); use "writeback" to keep flushes.
+  default = "unsafe"
+}
+
 variable "image_name" {
   type    = string
   default = "fmcv"
@@ -70,7 +78,7 @@ source "qemu" "cisco-fmc" {
   disk_image        = true
   use_backing_file  = false
   disk_interface    = "virtio"
-  disk_cache        = "none"
+  disk_cache        = var.disk_cache
   format            = "qcow2"
   net_device        = "virtio-net"
   iso_checksum      = "none"
